@@ -29,7 +29,7 @@ function checkKey(e) {
 	save = {};
 	save[e.keyCode] = getSelectionText();
 	chrome.storage.sync.set(save, null);	
-    } else if (e.shiftKey && e.altKey && e.keyCode >= 49 && e.keyCode <= 58) {
+    } else if (e.shiftKey && e.altKey && e.keyCode >= 48 && e.keyCode <= 57) {
 	// load
 	chrome.storage.sync.get(null, function(paste) {
 	  pasteAtCursor(paste[e.keyCode]);
