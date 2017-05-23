@@ -10,7 +10,7 @@ function getSelectionText() {
 
 function checkKey(e) {
     e = e || window.event;
-    alert(e.keyCode);
+    alert(getSelectionText());
 }
 
 document.onkeypress = checkKey;
