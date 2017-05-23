@@ -17,19 +17,23 @@ function pasteAtCursor(toPaste) {
         var before = text.substring(0, start); // text already there, before the cursor
         var after  = text.substring(end, text.length); // text already there, after the cursor
         el.value = (before + toPaste + after); // replace old contents with inserted text
-        el.selectionStart = el.selectionEnd = start + newText.length; // move cursor to end of inserted text
+        el.selectionStart = el.selectionEnd = start + toPaste.length; // move cursor to end of inserted text
         el.focus();
     }
 }
 
-var saved ={};
 function checkKey(e) {
     e = e || window.event;
-    var selection = getSelectionText();
     if (e.shiftKey && e.ctrlKey && e.keyCode >= 48 && e.keyCode <= 57) { // only react to number keys
-        saved[e.keyCode] = selection;
+	// save
+	save = {};
+	save[e.keyCode] = getSelectionText();
+	chrome.storage.sync.set(save, null);	
     } else if (e.shiftKey && e.altKey && e.keyCode >= 49 && e.keyCode <= 58) {
-	pasteAtCursor(saved[e.keyCode]);
+	// load
+	chrome.storage.sync.get(null, function(paste) {
+	  pasteAtCursor(paste[e.keyCode]);
+        });
     }
 }
 
